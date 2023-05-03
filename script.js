@@ -6,7 +6,17 @@ const gameBoard = (() => {
     array.forEach((e) => {
       const gridCell = document.createElement('div');
 
-      gridCell.innerText = e;
+      if (e === 'X') {
+        const gridCellImg = document.createElement('img');
+        gridCellImg.src = 'assets/svg/noun-crossbones-1002557.svg';
+        gridCell.appendChild(gridCellImg);
+      }
+
+      if (e === 'O') {
+        const gridCellImg = document.createElement('img');
+        gridCellImg.src = 'assets/svg/noun-skull-4522.svg';
+        gridCell.appendChild(gridCellImg);
+      }
 
       gameboardContainer.appendChild(gridCell);
     });
