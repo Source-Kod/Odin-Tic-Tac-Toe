@@ -12,6 +12,12 @@ const gameBoard = (() => {
   ];
   const gameboardContainer = document.querySelector('#gameboard-container');
 
+  const clearArray = () => {
+    array.forEach((e, index) => {
+      array[index] = 'empty';
+    });
+  };
+
   const deleteBoard = () => {
     while (gameboardContainer.firstChild) {
       gameboardContainer.removeChild(gameboardContainer.firstChild);
@@ -41,9 +47,19 @@ const gameBoard = (() => {
           } else {
             player2.selectMove(index);
           }
-          game.changePlayerTurn();
+
           deleteBoard();
           drawBoard();
+
+          if (game.checkForWinner(array)) {
+            game.checkWhichPlayerTurn() === 1
+              ? player1.winGame()
+              : player2.winGame();
+          }
+
+          if (!game.checkForWinner(array)) {
+            game.changePlayerTurn();
+          }
         });
       }
 
@@ -56,11 +72,12 @@ const gameBoard = (() => {
   const changeArray = (index, playerLetter) => {
     array[index] = playerLetter;
   };
-  return { drawBoard, changeArray, deleteBoard };
+  return { drawBoard, changeArray, deleteBoard, clearArray };
 })();
 
 const game = (() => {
   let turn = 1;
+  const winResultContainer = document.querySelector('#win-result-container');
 
   const checkWhichPlayerTurn = () => turn;
 
@@ -68,14 +85,76 @@ const game = (() => {
     turn = turn === 1 ? 2 : 1;
   };
 
-  return { checkWhichPlayerTurn, changePlayerTurn };
+  const createRestartbutton = () => {
+    const restartButton = document.createElement('button');
+
+    restartButton.innerText = 'Restart';
+
+    restartButton.addEventListener('click', () => {
+      gameBoard.clearArray();
+      game.clearResults();
+      gameBoard.deleteBoard();
+      gameBoard.drawBoard();
+    });
+    winResultContainer.appendChild(restartButton);
+  };
+
+  const clearResults = () => {
+    while (winResultContainer.firstChild) {
+      winResultContainer.removeChild(winResultContainer.firstChild);
+    }
+  };
+
+  const checkForWinner = (array) => {
+    if (turn === 1) {
+      if (array[0] === 'X' && array[1] === 'X' && array[2] === 'X') return true;
+      if (array[3] === 'X' && array[4] === 'X' && array[5] === 'X') return true;
+      if (array[6] === 'X' && array[7] === 'X' && array[8] === 'X') return true;
+      if (array[0] === 'X' && array[3] === 'X' && array[6] === 'X') return true;
+      if (array[1] === 'X' && array[4] === 'X' && array[7] === 'X') return true;
+      if (array[2] === 'X' && array[5] === 'X' && array[8] === 'X') return true;
+      if (array[0] === 'X' && array[4] === 'X' && array[8] === 'X') return true;
+      if (array[2] === 'X' && array[4] === 'X' && array[6] === 'X') return true;
+    }
+
+    if (turn === 2) {
+      if (array[0] === 'O' && array[1] === 'O' && array[2] === 'O') return true;
+      if (array[3] === 'O' && array[4] === 'O' && array[5] === 'O') return true;
+      if (array[0] === 'O' && array[3] === 'O' && array[6] === 'O') return true;
+      if (array[1] === 'O' && array[4] === 'O' && array[7] === 'O') return true;
+      if (array[2] === 'O' && array[5] === 'O' && array[8] === 'O') return true;
+      if (array[0] === 'O' && array[4] === 'O' && array[8] === 'O') return true;
+      if (array[2] === 'O' && array[4] === 'O' && array[6] === 'O') return true;
+    }
+
+    return false;
+  };
+
+  return {
+    checkWhichPlayerTurn,
+    changePlayerTurn,
+    checkForWinner,
+    createRestartbutton,
+    clearResults,
+  };
 })();
 
 const playerFactory = (playerLetter) => {
+  const winResultContainer = document.querySelector('#win-result-container');
+
   const selectMove = (index) => {
     gameBoard.changeArray(index, playerLetter);
   };
-  return { selectMove };
+
+  const winGame = () => {
+    const winResult = document.createElement('p');
+
+    winResult.innerText = `The Winner is Player ${playerLetter}!`;
+
+    winResultContainer.appendChild(winResult);
+    game.createRestartbutton();
+  };
+  return { selectMove, winGame };
 };
 
 const player1 = playerFactory('X');
