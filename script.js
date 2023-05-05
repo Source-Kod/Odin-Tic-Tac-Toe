@@ -40,7 +40,7 @@ const gameBoard = (() => {
         gridCell.appendChild(gridCellImg);
       }
 
-      if (e === 'empty') {
+      if (e === 'empty' && !game.checkForWinner(array)) {
         gridCell.addEventListener('click', () => {
           if (game.checkWhichPlayerTurn() === 1) {
             player1.selectMove(index);
@@ -72,7 +72,9 @@ const gameBoard = (() => {
   const changeArray = (index, playerLetter) => {
     array[index] = playerLetter;
   };
-  return { drawBoard, changeArray, deleteBoard, clearArray };
+  return {
+    drawBoard, changeArray, deleteBoard, clearArray,
+  };
 })();
 
 const game = (() => {
