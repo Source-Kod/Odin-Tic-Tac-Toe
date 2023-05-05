@@ -57,9 +57,8 @@ const gameBoard = (() => {
               : player2.winGame();
           }
 
-          if (!game.checkForWinner(array)) {
-            game.changePlayerTurn();
-          }
+          if (!array.includes('empty') && !game.checkForWinner(array)) game.DrawGame();
+          game.changePlayerTurn();
         });
       }
 
@@ -73,7 +72,10 @@ const gameBoard = (() => {
     array[index] = playerLetter;
   };
   return {
-    drawBoard, changeArray, deleteBoard, clearArray,
+    drawBoard,
+    changeArray,
+    deleteBoard,
+    clearArray,
   };
 })();
 
@@ -97,8 +99,21 @@ const game = (() => {
       game.clearResults();
       gameBoard.deleteBoard();
       gameBoard.drawBoard();
+      turn = 1;
     });
     winResultContainer.appendChild(restartButton);
+    restartButton.classList = 'bg-blue-500 text-white py-2 px-4 rounded font-custom'
+  };
+
+  const DrawGame = () => {
+    const winResultContainer = document.querySelector('#win-result-container');
+    const winResult = document.createElement('p');
+
+    winResult.innerText = 'Its a Draw!';
+    winResult.classList = 'font-custom'
+
+    winResultContainer.appendChild(winResult);
+    createRestartbutton();
   };
 
   const clearResults = () => {
@@ -138,6 +153,7 @@ const game = (() => {
     checkForWinner,
     createRestartbutton,
     clearResults,
+    DrawGame,
   };
 })();
 
@@ -152,6 +168,7 @@ const playerFactory = (playerLetter) => {
     const winResult = document.createElement('p');
 
     winResult.innerText = `The Winner is Player ${playerLetter}!`;
+    winResult.classList = 'font-custom'
 
     winResultContainer.appendChild(winResult);
     game.createRestartbutton();
