@@ -102,7 +102,7 @@ const game = (() => {
       turn = 1;
     });
     winResultContainer.appendChild(restartButton);
-    restartButton.classList = 'bg-blue-500 text-white py-2 px-4 rounded font-custom'
+    restartButton.classList = 'bg-blue-500 text-white py-2 px-4 rounded font-custom';
   };
 
   const DrawGame = () => {
@@ -110,7 +110,7 @@ const game = (() => {
     const winResult = document.createElement('p');
 
     winResult.innerText = 'Its a Draw!';
-    winResult.classList = 'font-custom'
+    winResult.classList = 'font-custom';
 
     winResultContainer.appendChild(winResult);
     createRestartbutton();
@@ -168,7 +168,7 @@ const playerFactory = (playerLetter) => {
     const winResult = document.createElement('p');
 
     winResult.innerText = `The Winner is Player ${playerLetter}!`;
-    winResult.classList = 'font-custom'
+    winResult.classList = 'font-custom';
 
     winResultContainer.appendChild(winResult);
     game.createRestartbutton();
