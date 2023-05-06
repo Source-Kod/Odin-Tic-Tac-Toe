@@ -168,7 +168,7 @@ const playerFactory = (playerLetter) => {
     const winResult = document.createElement('p');
 
     winResult.innerText = `The Winner is Player ${playerLetter}!`;
-    winResult.classList = 'font-custom';
+    winResult.classList = 'font-custom text-xl text-white';
 
     winResultContainer.appendChild(winResult);
     game.createRestartbutton();
