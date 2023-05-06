@@ -71,7 +71,7 @@ const gameBoard = (() => {
 
       gameboardContainer.appendChild(gridCell);
 
-      gridCell.classList = 'w-44 h-44 border border-solid';
+      gridCell.classList = 'w-32 h-32 md:w-44 md:h-44 border border-solid';
     });
   };
 
